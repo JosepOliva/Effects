@@ -1,0 +1,88 @@
+[gd_scene load_steps=12 format=3 uid="uid://dxfsc31hafovr"]
+
+[ext_resource type="Script" uid="uid://dqrwmdtk2ls5o" path="res://scripts/Player/player_3.gd" id="1_wvkwn"]
+[ext_resource type="Texture2D" uid="uid://blak6e758jta7" path="res://Characters/SpacialMarine/players blue x1.png" id="2_ni73s"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4ws0r"]
+atlas = ExtResource("2_ni73s")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aelsq"]
+atlas = ExtResource("2_ni73s")
+region = Rect2(32, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8k0m4"]
+atlas = ExtResource("2_ni73s")
+region = Rect2(0, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o7ujg"]
+atlas = ExtResource("2_ni73s")
+region = Rect2(0, 128, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4rku1"]
+atlas = ExtResource("2_ni73s")
+region = Rect2(32, 128, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qxgy8"]
+atlas = ExtResource("2_ni73s")
+region = Rect2(64, 128, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_imwk5"]
+atlas = ExtResource("2_ni73s")
+region = Rect2(96, 128, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ovkvv"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4ws0r")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_aelsq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8k0m4")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o7ujg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4rku1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qxgy8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_imwk5")
+}],
+"loop": false,
+"name": &"fire",
+"speed": 35.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_u71wa"]
+size = Vector2(12, 16)
+
+[node name="Player3" type="CharacterBody2D"]
+scale = Vector2(2, 2)
+collision_mask = 3
+script = ExtResource("1_wvkwn")
+
+[node name="AnimatedSpritePlayer3" type="AnimatedSprite2D" parent="."]
+unique_name_in_owner = true
+sprite_frames = SubResource("SpriteFrames_ovkvv")
+animation = &"fire"
+autoplay = "Idle"
+
+[node name="CollisionShapeEnemy" type="CollisionShape2D" parent="."]
+position = Vector2(0, 8)
+shape = SubResource("RectangleShape2D_u71wa")
+
+[node name="ShootingPoint_3" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(9, 8)

@@ -1,0 +1,94 @@
+[gd_scene load_steps=16 format=3 uid="uid://c1ihdh84gg3hd"]
+
+[ext_resource type="Shader" uid="uid://8cngkyti0mpd" path="res://Shaders/outline.tres" id="1_df8f3"]
+[ext_resource type="Texture2D" uid="uid://fwhsijt0tmhk" path="res://Characters/Robot/player-stand/player-stand-1.png" id="3_2vt7h"]
+[ext_resource type="Texture2D" uid="uid://luuqdpkbyreb" path="res://Characters/Robot/player-stand/player-stand-2.png" id="4_72a5f"]
+[ext_resource type="Texture2D" uid="uid://bg83csh8reis4" path="res://Characters/Robot/player-stand/player-stand-3.png" id="5_binqc"]
+[ext_resource type="Texture2D" uid="uid://dcr8gf5fx4m3y" path="res://Characters/Robot/player-stand/player-stand-4.png" id="6_i2atp"]
+[ext_resource type="Shader" uid="uid://c2j78irnu7e6w" path="res://Shaders/dissapear.tres" id="7_wwcmm"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0q0jq"]
+shader = ExtResource("1_df8f3")
+shader_parameter/OutlineColor = Color(0.252082, 0.806075, 0.897719, 1)
+shader_parameter/Width = 0.4
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_x10u4"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_2vt7h")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_72a5f")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_binqc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_i2atp")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cqpro"]
+size = Vector2(26, 35)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_d3l8q"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_6o4c8"]
+noise = SubResource("FastNoiseLite_d3l8q")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ofwrn"]
+shader = ExtResource("7_wwcmm")
+shader_parameter/Noise = SubResource("NoiseTexture2D_6o4c8")
+shader_parameter/DissolveValue = 1.0
+
+[sub_resource type="Gradient" id="Gradient_23p4j"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_gv4o1"]
+gradient = SubResource("Gradient_23p4j")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_23p4j"]
+lifetime_randomness = 1.0
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 17.0
+direction = Vector3(0.4, -0.4, 0)
+initial_velocity_min = 200.0
+initial_velocity_max = 400.0
+gravity = Vector3(0, 700, 0)
+damping_min = 100.0
+damping_max = 800.0
+scale_min = 0.5
+scale_max = 2.0
+color_ramp = SubResource("GradientTexture1D_gv4o1")
+
+[node name="OutlinePlayer" type="CharacterBody2D"]
+scale = Vector2(1.5, 1.5)
+collision_mask = 3
+
+[node name="AnimatedSpriteDissapear" type="AnimatedSprite2D" parent="."]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_0q0jq")
+position = Vector2(-0.666667, 0)
+sprite_frames = SubResource("SpriteFrames_x10u4")
+animation = &"Idle"
+autoplay = "Idle"
+frame_progress = 0.578537
+flip_h = true
+
+[node name="CollisionShapePlayer" type="CollisionShape2D" parent="."]
+position = Vector2(-2, 6.5)
+shape = SubResource("RectangleShape2D_cqpro")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+material = SubResource("ShaderMaterial_ofwrn")
+position = Vector2(-4.66667, 2)
+emitting = false
+amount = 20
+lifetime = 0.9
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_23p4j")

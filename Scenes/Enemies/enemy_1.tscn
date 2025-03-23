@@ -1,0 +1,53 @@
+[gd_scene load_steps=10 format=3 uid="uid://dwym6is73kuk6"]
+
+[ext_resource type="Script" uid="uid://bm3np8eyx4tii" path="res://scripts/Enemy/enemy1.gd" id="1_ghaa6"]
+[ext_resource type="Shader" uid="uid://dib25oorhct5h" path="res://Shaders/blink.gdshader" id="2_1dp5w"]
+[ext_resource type="Texture2D" uid="uid://fwhsijt0tmhk" path="res://Characters/Robot/player-stand/player-stand-1.png" id="3_auwsv"]
+[ext_resource type="Texture2D" uid="uid://luuqdpkbyreb" path="res://Characters/Robot/player-stand/player-stand-2.png" id="4_8uf12"]
+[ext_resource type="Texture2D" uid="uid://bg83csh8reis4" path="res://Characters/Robot/player-stand/player-stand-3.png" id="5_po0sg"]
+[ext_resource type="Texture2D" uid="uid://dcr8gf5fx4m3y" path="res://Characters/Robot/player-stand/player-stand-4.png" id="6_haro7"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_g4bnc"]
+resource_local_to_scene = true
+shader = ExtResource("2_1dp5w")
+shader_parameter/blink_color = Color(1, 1, 1, 1)
+shader_parameter/blink_intensity = 0.0
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_x10u4"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_auwsv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_8uf12")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_po0sg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_haro7")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cqpro"]
+size = Vector2(26, 35)
+
+[node name="Enemy1" type="CharacterBody2D"]
+scale = Vector2(1.5, 1.5)
+collision_mask = 3
+script = ExtResource("1_ghaa6")
+
+[node name="AnimatedSpritePlayer" type="AnimatedSprite2D" parent="."]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_g4bnc")
+sprite_frames = SubResource("SpriteFrames_x10u4")
+animation = &"Idle"
+flip_h = true
+
+[node name="CollisionShapePlayer" type="CollisionShape2D" parent="."]
+position = Vector2(-2, 6.5)
+shape = SubResource("RectangleShape2D_cqpro")

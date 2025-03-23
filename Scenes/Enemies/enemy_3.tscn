@@ -1,0 +1,82 @@
+[gd_scene load_steps=13 format=3 uid="uid://cm4c581j3mjqd"]
+
+[ext_resource type="Script" uid="uid://mvbw6abnv4o1" path="res://scripts/Enemy/enemy_3.gd" id="1_23p4j"]
+[ext_resource type="Shader" uid="uid://dib25oorhct5h" path="res://Shaders/blink.gdshader" id="2_gv4o1"]
+[ext_resource type="Texture2D" uid="uid://fwhsijt0tmhk" path="res://Characters/Robot/player-stand/player-stand-1.png" id="3_pyg0a"]
+[ext_resource type="Texture2D" uid="uid://luuqdpkbyreb" path="res://Characters/Robot/player-stand/player-stand-2.png" id="4_nfxc2"]
+[ext_resource type="Texture2D" uid="uid://bg83csh8reis4" path="res://Characters/Robot/player-stand/player-stand-3.png" id="5_jb6j8"]
+[ext_resource type="Texture2D" uid="uid://dcr8gf5fx4m3y" path="res://Characters/Robot/player-stand/player-stand-4.png" id="6_nypmv"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_g4bnc"]
+resource_local_to_scene = true
+shader = ExtResource("2_gv4o1")
+shader_parameter/blink_color = Color(1, 1, 1, 1)
+shader_parameter/blink_intensity = 0.0
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_x10u4"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_pyg0a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_nfxc2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_jb6j8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_nypmv")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cqpro"]
+size = Vector2(26, 35)
+
+[sub_resource type="Gradient" id="Gradient_23p4j"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_gv4o1"]
+gradient = SubResource("Gradient_23p4j")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_23p4j"]
+lifetime_randomness = 1.0
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 17.0
+direction = Vector3(0.4, -0.4, 0)
+initial_velocity_min = 200.0
+initial_velocity_max = 400.0
+gravity = Vector3(0, 700, 0)
+damping_min = 100.0
+damping_max = 800.0
+scale_min = 0.5
+scale_max = 2.0
+color_ramp = SubResource("GradientTexture1D_gv4o1")
+
+[node name="Enemy3" type="CharacterBody2D"]
+scale = Vector2(1.5, 1.5)
+collision_mask = 3
+script = ExtResource("1_23p4j")
+
+[node name="AnimatedSpriteEnemy3" type="AnimatedSprite2D" parent="."]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_g4bnc")
+sprite_frames = SubResource("SpriteFrames_x10u4")
+animation = &"Idle"
+flip_h = true
+
+[node name="CollisionShapePlayer" type="CollisionShape2D" parent="."]
+position = Vector2(-2, 6.5)
+shape = SubResource("RectangleShape2D_cqpro")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+position = Vector2(-4, 2)
+emitting = false
+amount = 20
+lifetime = 0.9
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_23p4j")
